@@ -17,7 +17,7 @@ const users = [
   },
 ];
 
-class AuthError extends Error {}
+class AuthError extends Error { }
 
 const authFactory = (secret) => (username, password) => {
   const user = users.find((u) => u.username === username);

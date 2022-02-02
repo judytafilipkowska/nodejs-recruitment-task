@@ -1,6 +1,6 @@
 # Node.js recruitment task
 
-Movie application, where users can save movies to their collections by searching for movies' titles.
+The movie application that allows users to save movies to their collections by searching for movies' titles.
 
 ## Prerequisites
 
@@ -45,7 +45,7 @@ docker-compose down
 
 ## Server routes
 
-POST `/auth` - Main page route. Renders home index view with job offers.
+POST `/auth` -  Authorization route. 
 POST `/movies` - Private route. Sends saved by user movies to DB.
 GET `/movies` - Private route. Retrives saved by user movies.
 
@@ -95,7 +95,7 @@ Response
 
 ## POST/movies example request
 
-To save a movie to the DB call POST request to endopint /movies through application used for API testing (e.g. Postman).
+To save a movie to the DB, call POST request to endpoint /movies through an application used for API testing (e.g., Postman).
 The service must be running.
 
 1. Verify user's authorization token. The token should be passed in request's Authorization header.
@@ -136,7 +136,7 @@ KEY: OMDBAPI_KEY Value: your-API-key
 
 ## GET/movies example request
 
-To retrive one's user saved movies send a GET request to endpoint /movies through application used for API testing (e.g. Postman).
+To retrieve one's user-saved movies, send a GET request to endpoint /movies through an application used for API testing (e.g., Postman).
 The service must be running.
 
 1. Verify user's authorization token. The token should be passed in request's Authorization header and send the request.

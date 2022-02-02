@@ -1,35 +1,6 @@
 # Node.js recruitment task
 
-We'd like you to build a simple Movie API. It should provide two endpoints:
-
-1. `POST /movies`
-   1. Allows creating a movie object based on movie title passed in the request body
-   2. Based on the title additional movie details should be fetched from
-      https://omdbapi.com/ and saved to the database. Data we would like you to
-      fetch from OMDb API:
-   ```
-     Title: string
-     Released: date
-     Genre: string
-     Director: string
-   ```
-   3. Only authorized users can create a movie.
-   4. `Basic` users are restricted to create 5 movies per month (calendar
-      month). `Premium` users have no limits.
-1. `GET /movies`
-   1. Should fetch a list of all movies created by an authorized user.
-
-⚠️ Don't forget to verify user's authorization token before processing the
-request. The token should be passed in request's `Authorization` header.
-
-```
-Authorization: Bearer <token>
-```
-
-# Authorization service
-
-To authorize users please use our simple auth service based on JWT tokens.
-Auth service code is located under `./src` directory
+Movie application, where users can save movies to their collections by searching for movies' titles.
 
 ## Prerequisites
 
@@ -38,10 +9,25 @@ You need to have `docker` and `docker-compose` installed on your computer to run
 ## Run locally
 
 1. Clone this repository
-1. Run from root dir
+2. Run the following command:
 
 ```
-JWT_SECRET=secret docker-compose up -d
+npm i
+```
+
+3. Add .env file and variables inside it
+
+```
+MONGODB_URI=your-MongoDB-URI
+MongoDB URI looks like: mongodb://localhost:27017/your-project-name-here
+JWT_SECRET=your-JWT-secret key
+OMDBAPI_KEY= your API key from https://omdbapi.com/
+```
+
+3. Compose your docker files
+
+```
+JWT_SECRET=-your-JWT-secret docker-compose up -d
 ```
 
 By default the auth service will start on port `3000` but you can override
@@ -57,48 +43,35 @@ To stop the authorization service run
 docker-compose down
 ```
 
-## JWT Secret
+## Server routes
 
-To generate tokens in auth service you need to provide env variable
-`JWT_SECRET`. It should be a string value. You should use the same secret in
-the API you're building to verify the JWT tokens.
+| ---- | -------------------------- | ------------------------------------------------------------ |
+| POST | `/auth` | Main page route. Renders home index view with job offers. |
+| POST | `/movies` | Private route. Sends saved by user movies to DB. |
+| GET | `/movies` | Private route. Retrives saved by user movies |
+| ---- | -------------------------- | ------------------------------------------------------------ |
 
 ## Users
 
 The auth service defines two user accounts that you should use
 
-1. `Basic` user
+1. `Basic` user - can only save five movies per month.
 
 ```
  username: 'basic-thomas'
  password: 'sR-_pcoow-27-6PAwCD8'
 ```
 
-1. `Premium` user
+1. `Premium` user - unlimited
 
 ```
 username: 'premium-jim'
 password: 'GBLtTyq3E_UNjFnpo9m6'
 ```
 
-## Token payload
-
-Decoding the auth token will give you access to basic information about the
-user, including its role.
-
-```
-{
-  "userId": 123,
-  "name": "Basic Thomas",
-  "role": "basic",
-  "iat": 1606221838,
-  "exp": 1606223638,
-  "iss": "https://www.netguru.com/",
-  "sub": "123"
-}
-```
-
 ## Example request
+
+## POST/auth request
 
 To authorize user call the auth service using for example `curl`. We assume
 that the auth service is running of the default port `3000`.
@@ -122,24 +95,77 @@ Response
 }
 ```
 
-## Rules
+## POST/movies example request
 
-- Database and framework choice are on your side.
-- Your API has to be dockerized. Create `Dockerfile` and `docker-compose` and document the process of running it locally.
-- Provided solution should consist of two microservices.
-  - `Authentication Service` - provided by us to auth users
-  - `Movies Service` - created by you to handle movies data
-- Test your code.
-- Provide documentation of your API.
-- Application should be pushed to the public git repository and should have a
-  working CI/CD pipeline that runs the tests. For example you can use GitHub
-  Actions or CircleCI. Create a sample PR to show us the working CI/CD pipeline.
+To save a movie to the DB call POST request to endopint /movies through application used for API testing (e.g. Postman).
+The service must be running.
 
-## What will be evaluated?
+1. Verify user's authorization token. The token should be passed in request's Authorization header.
 
-- Task completeness
-- Architecture
-- Code quality
-- Tests quality
-- Database design
-- Technology stack
+```
+Authorization: Bearer <token>
+```
+
+2. In request body add searchQuery.
+
+```
+{
+"searchQuery" : "avengers"
+}
+```
+
+3. Response from the request
+
+```
+{
+ "Title": "The Avengers",
+    "Released": "2012-05-03T23:00:00.000Z",
+    "Genre": "Action, Adventure, Sci-Fi",
+    "Director": "Joss Whedon",
+    "createdBy": "123",
+    "_id": "61f9efb7f1a6c81803257cf4",
+    "created_at": "2022-02-02T02:43:03.763Z",
+    "updated_at": "2022-02-02T02:43:03.763Z",
+    "__v": 0
+}
+```
+
+## GET/movies example request
+
+To retrive one's user saved movies send a GET request to endpoint /movies through application used for API testing (e.g. Postman).
+The service must be running.
+
+1. Verify user's authorization token. The token should be passed in request's Authorization header and send the request.
+
+```
+Authorization: Bearer <token>
+```
+
+2. Response from the request:
+
+```
+[
+    {
+        "_id": "61f9ec67d85096cbf3ad2d10",
+        "Title": "100",
+        "Released": "2019-05-02T23:00:00.000Z",
+        "Genre": "Action",
+        "Director": "Sam Anton",
+        "createdBy": "123",
+        "created_at": "2022-02-02T02:28:55.564Z",
+        "updated_at": "2022-02-02T02:28:55.564Z",
+        "__v": 0
+    },
+    {
+        "_id": "61f9ef4be7c318ac5daeaf4a",
+        "Title": "Happy",
+        "Released": "2012-02-11T00:00:00.000Z",
+        "Genre": "Documentary, Drama, Family",
+        "Director": "Roko Belic",
+        "createdBy": "123",
+        "created_at": "2022-02-02T02:41:15.870Z",
+        "updated_at": "2022-02-02T02:41:15.870Z",
+        "__v": 0
+    }
+]
+```

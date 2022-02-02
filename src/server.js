@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { authFactory, AuthError } = require("./auth");
+require('dotenv/config');
+require('./db/index')
 
 const PORT = 3000;
 const { JWT_SECRET } = process.env;
@@ -46,6 +48,9 @@ app.use((error, _, res, __) => {
 
   return res.status(500).json({ error: "internal server error" });
 });
+
+const moviesRoutes = require("./routes/movies.routes");
+app.use("/movies", moviesRoutes);
 
 app.listen(PORT, () => {
   console.log(`auth svc running at port ${PORT}`);

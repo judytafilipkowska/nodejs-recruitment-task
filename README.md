@@ -110,7 +110,7 @@ Authorization: Bearer <token>
 KEY: OMDBAPI_KEY Value: your-API-key
 ```
 
-2. In request body under raw add searchQuery (JSON).
+3. In request body under raw add searchQuery (JSON).
 
 ```
 {
@@ -118,7 +118,7 @@ KEY: OMDBAPI_KEY Value: your-API-key
 }
 ```
 
-3. Response from the request
+4. Response
 
 ```
 {
@@ -145,7 +145,7 @@ The service must be running.
 Authorization: Bearer <token>
 ```
 
-2. Response from the request:
+2. Response 
 
 ```
 [

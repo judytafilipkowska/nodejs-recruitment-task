@@ -11,7 +11,6 @@ const userType = async (req, res, next) => {
         const calendarMonth = new Date().getMonth();
         const createdMoviesCalnedarMonth = createdMovies.filter((oneMovie) => {
             const movieAdded = new Date(oneMovie.created_at)
-            console.log(movieAdded)
             return movieAdded.getMonth() === calendarMonth
         })
 

@@ -19,7 +19,7 @@ router.post('/', authenticateToken, userType, async (req, res) => {
                 Genre }
         } = await axios.get
             (
-                `https://www.omdbapi.com/?t=${searchQuery}&apikey=c34a4490`)
+                `https://www.omdbapi.com/?t=${searchQuery}&apikey=${process.env.OMDBAPI_KEY}`)
 
         if (!Title) {
             res.status(400).json({

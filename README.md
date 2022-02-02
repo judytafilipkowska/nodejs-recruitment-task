@@ -21,7 +21,7 @@ npm i
 MONGODB_URI=your-MongoDB-URI
 MongoDB URI looks like: mongodb://localhost:27017/your-project-name-here
 JWT_SECRET=your-JWT-secret key
-OMDBAPI_KEY= your API key from https://omdbapi.com/
+OMDBAPI_KEY= your-API-key from https://omdbapi.com/
 ```
 
 3. Compose your docker files
@@ -45,11 +45,9 @@ docker-compose down
 
 ## Server routes
 
-| ---- | -------------------------- | ------------------------------------------------------------ |
-| POST | `/auth`                    | Main page route. Renders home index view with job offers.    |
-| POST | `/movies`                  | Private route. Sends saved by user movies to DB.             |
-| GET  | `/movies`                  | Private route. Retrives saved by user movies                                  |
-| ---- | -------------------------- | ------------------------------------------------------------ |
+POST `/auth` - Main page route. Renders home index view with job offers.
+POST `/movies` - Private route. Sends saved by user movies to DB.
+GET `/movies` - Private route. Retrives saved by user movies.
 
 ## Users
 
@@ -106,7 +104,13 @@ The service must be running.
 Authorization: Bearer <token>
 ```
 
-2. In request body add searchQuery.
+2. In request body under x-www-form-urlencoded add your OMDBAPI_KEY.
+
+```
+KEY: OMDBAPI_KEY Value: your-API-key
+```
+
+2. In request body under raw add searchQuery (JSON).
 
 ```
 {

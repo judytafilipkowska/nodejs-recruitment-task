@@ -46,9 +46,9 @@ docker-compose down
 ## Server routes
 
 | ---- | -------------------------- | ------------------------------------------------------------ |
-| POST | `/auth` | Main page route. Renders home index view with job offers. |
-| POST | `/movies` | Private route. Sends saved by user movies to DB. |
-| GET | `/movies` | Private route. Retrives saved by user movies |
+| POST | `/auth`                    | Main page route. Renders home index view with job offers.    |
+| POST | `/movies`                  | Private route. Sends saved by user movies to DB.             |
+| GET  | `/movies`                  | Private route. Retrives saved by user movies                                  |
 | ---- | -------------------------- | ------------------------------------------------------------ |
 
 ## Users
